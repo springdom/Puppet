@@ -10,6 +10,14 @@ class nagios::config {
                  notification_period => '24x7',
                  notification_options => 'd,u,r',
                  contact_groups => 'sysadmins',
+		 notifications_enabled => '1',
+		 event_handler_enabled => '1',
+		 flap_detection_enabled => '1',
+		 failure_prediction_enabled => '1',
+		 process_perf_data => '1',
+		 retain_status_information => '1',
+		 retain_nonstatus_information => '1',
+		 notify => Class["nagios::service"]
    }
   nagios_host { 'app.sqrawler.com':
                  target => '/etc/nagios3/conf.d/ppt_hosts.cfg',
@@ -22,6 +30,14 @@ class nagios::config {
                  notification_period => '24x7',
                  notification_options => 'd,u,r',
                  contact_groups => 'sysadmins',
+		 notifications_enabled => '1',
+		 event_handler_enabled => '1',
+		 flap_detection_enabled => '1',
+		 failure_prediction_enabled => '1',
+		 process_perf_data => '1',
+		 retain_status_information => '1',
+		 retain_nonstatus_information => '1',
+		 notify => Class["nagios::service"]
    }
 
   nagios_host { 'storage.sqrawler.com':
@@ -35,6 +51,14 @@ class nagios::config {
                  notification_period => '24x7',
                  notification_options => 'd,u,r',
                  contact_groups => 'sysadmins',
+		 notifications_enabled => '1',
+		 event_handler_enabled => '1',
+		 flap_detection_enabled => '1',
+		 failure_prediction_enabled => '1',
+		 process_perf_data => '1',
+		 retain_status_information => '1',
+		 retain_nonstatus_information => '1',
+		 notify => Class["nagios::service"]
    }
 
   nagios_host { 'ad.sqrawler.com':
@@ -48,6 +72,14 @@ class nagios::config {
                  notification_period => '24x7',
                  notification_options => 'd,u,r',
                  contact_groups => 'sysadmins',
+		 notifications_enabled => '1',
+		 event_handler_enabled => '1',
+		 flap_detection_enabled => '1',
+		 failure_prediction_enabled => '1',
+		 process_perf_data => '1',
+		 retain_status_information => '1',
+		 retain_nonstatus_information => '1',
+		 notify => Class["nagios::service"]
    }
 
 
@@ -63,9 +95,11 @@ class nagios::config {
               host_notification_period => '24x7',
               service_notification_options => 'w,u,c,r',
               host_notification_options => 'd,r',
-              service_notification_commands => 'notify-service-by-email',
-              host_notification_commands => 'notify-host-by-email',
-              email => 'root@localhost',
+              service_notification_commands => 'notify-service-by-email, notify-service-by-whatsapp',
+              host_notification_commands => 'notify-host-by-email, notify-host-by-whatsapp',
+              email => 'manly13@hotmail.com',
+   	      notify => Class["nagios::service"],
+	      pager => '64212926567',
   }
   nagios_service {'MySQL':
               service_description => 'MySQL DB',
