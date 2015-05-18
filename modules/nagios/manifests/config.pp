@@ -1,4 +1,25 @@
 class nagios::config {
+    nagios_host { 'mgmt.sqrawler.com':
+                 target => '/etc/nagios3/conf.d/ppt_hosts.cfg',
+                 alias => 'mgmt',
+                 address => '10.25.1.39',
+                 check_period => '24x7',
+                 max_check_attempts => 3,
+                 check_command => 'check-host-alive',
+                 notification_interval => 30,
+                 notification_period => '24x7',
+                 notification_options => 'd,u,r',
+                 contact_groups => 'sysadmins',
+                 notifications_enabled => '1',
+                 event_handler_enabled => '1',
+                 flap_detection_enabled => '1',
+                 failure_prediction_enabled => '1',
+                 process_perf_data => '1',
+                 retain_status_information => '1',
+                 retain_nonstatus_information => '1',
+                 notify => Class["nagios::service"]
+   }
+
   nagios_host { 'db.sqrawler.com':
                  target => '/etc/nagios3/conf.d/ppt_hosts.cfg',
                  alias => 'db',
@@ -81,7 +102,12 @@ class nagios::config {
 		 retain_nonstatus_information => '1',
 		 notify => Class["nagios::service"]
    }
-
+	nagios_hostgroup { 'debian-servers':
+		target => '/etc/nagios3/conf.d/ppt_hostgroups.cfg',
+		alias => 'Debian Servers',
+		members => 'mgmt.sqrawler.com, app.sqrawler.com, storage.sqrawler.com, db.sqrawler.com',
+		notify => Class["nagios::service"],
+	}
 
    nagios_contactgroup {'sysadmins':
      target => '/etc/nagios3/conf.d/ppt_contactgroups.cfg',
@@ -105,7 +131,7 @@ class nagios::config {
               service_description => 'MySQL DB',
               hostgroup_name => 'db-servers',
               target => '/etc/nagios3/conf.d/ppt_mysql_service.cfg',
-              check_command => 'check_mysql',
+              check_command => 'check_mysql_cmdlinecred!$USER3$!$USER4$',
               max_check_attempts => 3,
               retry_check_interval => 1,
               normal_check_interval => 5,
@@ -115,10 +141,52 @@ class nagios::config {
               notification_options => 'w,u,c',
               contact_groups => 'sysadmins',
   }
+
+  nagios_service {'HTTP':
+              service_description => 'HTTP',
+              hostgroup_name => 'http-servers',
+              target => '/etc/nagios3/conf.d/ppt_http_service.cfg',
+              check_command => 'check_http',
+              max_check_attempts => 3,
+              retry_check_interval => 1,
+              normal_check_interval => 5,
+              check_period => '24x7',
+              notification_interval => 30,
+              notification_period => '24x7',
+              notification_options => 'w,u,c',
+              contact_groups => 'sysadmins',
+  }
+  nagios_service { 'SSH':
+	service_description => 'SSH',
+	check_command => 'check_ssh',
+	hostgroup_name => 'ssh-servers',
+	target => '/etc/nagios3/conf.d/ppt_ssh_service.cfg',
+        max_check_attempts => 3,
+        retry_check_interval => 1,
+        normal_check_interval => 5,
+       check_period => '24x7',
+        notification_interval => 30,
+        notification_period => '24x7',
+        notification_options => 'w,u,c',
+        contact_groups => 'sysadmins',
+}
+
     nagios_hostgroup{'db-servers':
               target => '/etc/nagios3/conf.d/ppt_hostgroups.cfg',
               alias => 'Database Servers',
               members => 'db.sqrawler.com',
   }
+  nagios_hostgroup { 'http-servers':
+		target => '/etc/nagios3/conf.d/ppt_hostgroups.cfg',
+		alias => 'HTTP Servers',
+		members => 'mgmt.sqrawler.com',
+		notify => Class["nagios::service"],
+  }
+	nagios_hostgroup { 'ssh-servers':
+		target => '/etc/nagios3/conf.d/ppt_hostgroups.cfg',
+		alias => 'SSH Servers',
+		members => 'app.sqrawler.com, db.sqrawler.com, mgmt.sqrawler.com, storage.sqrawler.com',
+		notify => Class["nagios::service"],
+	}
 }
 
