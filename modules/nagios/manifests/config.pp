@@ -114,6 +114,7 @@ class nagios::config {
      target => '/etc/nagios3/conf.d/ppt_contactgroups.cfg',
      alias => 'Systems Administrators',
      members => 'taylomj5',
+     notify => Exec['fix-file-permissions'],
   }
   nagios_contact { 'taylomj5':
          target => '/etc/nagios3/conf.d/ppt_contacts.cfg',

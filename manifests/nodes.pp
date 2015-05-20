@@ -23,6 +23,7 @@ include sudo
 include bacula-file
 include bacula-director
 include nrpe
+include exim
 }
 node 'ad'
 {
