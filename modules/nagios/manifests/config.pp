@@ -267,7 +267,7 @@ class nagios::config {
   nagios_service { 'Windows CPU Load':
 	service_description => 'CPU Load',
 	hostgroup_name => 'windows-servers',
-	check_command => 'check_nt!CPULOAD!-l 5,80,90',
+	check_command => 'check_nt!CPULOAD! -l 5,80,90',
 	target => '/etc/nagios3/conf.d/ppt_wincpuload.cfg',
         max_check_attempts => 3,
         retry_check_interval => 1,
@@ -296,7 +296,7 @@ class nagios::config {
   nagios_service { 'Windows Disk Usage':
 	service_description => 'Disk Space',
 	hostgroup_name => 'windows-servers',
-	check_command => 'check_nt!USEDDISKSPACE!-l c -w 80 -c 90',
+	check_command => 'check_nt!USEDDISKSPACE! -l c -w 80 -c 90',
 	target => '/etc/nagios3/conf.d/ppt_windisk.cfg',
         max_check_attempts => 3,
         retry_check_interval => 1,
