@@ -265,25 +265,11 @@ class nagios::config {
         contact_groups => 'sysadmins',
 
   }
-  nagios_service { 'Windows CPU Load':
-	service_description => 'CPU Load',
-	hostgroup_name => 'windows-servers',
-	check_command => 'check_nt!CPULOAD! -l 5,80,90',
-	target => '/etc/nagios3/conf.d/ppt_wincpuload.cfg',
-        max_check_attempts => 3,
-        retry_check_interval => 1,
-        normal_check_interval => 5,
-        check_period => '24x7',
-        notification_interval => 30,
-        notification_period => '24x7',
-        notification_options => 'w,u,c',
-        contact_groups => 'sysadmins',
-	}
 
   nagios_service { 'Windows Mem Usage':
 	service_description => 'Memory Usage',
 	hostgroup_name => 'windows-servers',
-	check_command => 'check_nt!MEMUSE! -w 80 -c 90',
+	check_command => 'check_ntdsk!MEMUSE! -w 80 -c 90',
 	target => '/etc/nagios3/conf.d/ppt_winmem.cfg',
         max_check_attempts => 3,
         retry_check_interval => 1,
@@ -294,24 +280,11 @@ class nagios::config {
         notification_options => 'w,u,c',
         contact_groups => 'sysadmins', 
  }
-  nagios_service { 'Windows Disk Usage':
-	service_description => 'Disk Space',
-	hostgroup_name => 'windows-servers',
-	check_command => 'check_nt!USEDDISKSPACE!-l c -w 80 -c 90',
-	target => '/etc/nagios3/conf.d/ppt_windisk.cfg',
-        max_check_attempts => 3,
-        retry_check_interval => 1,
-        normal_check_interval => 5,
-        check_period => '24x7',
-        notification_interval => 30,
-        notification_period => '24x7',
-        notification_options => 'w,u,c',
-        contact_groups => 'sysadmins',
-  }
+
   nagios_service { 'Explorer':
         service_description => 'Explorer',
         hostgroup_name => 'windows-servers',
-        check_command => 'check_nt!PROCSTATE!-d SHOWALL -l Explorer.exe',
+        check_command => 'check_ntser!PROCSTATE!',
         target => '/etc/nagios3/conf.d/ppt_explorer.cfg',
         max_check_attempts => 3,
         retry_check_interval => 1,
@@ -322,6 +295,38 @@ class nagios::config {
         notification_options => 'w,u,c',
         contact_groups => 'sysadmins',
   }
+  
+  nagios_service { 'Used Disk Space':
+        service_description => 'C:\ Drive Space',
+        hostgroup_name => 'windows-servers',
+        check_command => 'check_ntdskC!USEDDISKSPACE!',
+        target => '/etc/nagios3/conf.d/ppt_useddiskspace.cfg',
+        max_check_attempts => 3,
+        retry_check_interval => 1,
+        normal_check_interval => 5,
+        check_period => '24x7',
+        notification_interval => 30,
+        notification_period => '24x7',
+        notification_options => 'w,u,c',
+        contact_groups => 'sysadmins',
+  }
+
+  nagios_service { 'Win CPU Load':
+        service_description => 'Cpu Load',
+        hostgroup_name => 'windows-servers',
+        check_command => 'check_ntdsk!CPULOAD!',
+        target => '/etc/nagios3/conf.d/ppt_wincpuload.cfg',
+        max_check_attempts => 3,
+        retry_check_interval => 1,
+        normal_check_interval => 5,
+        check_period => '24x7',
+        notification_interval => 30,
+        notification_period => '24x7',
+        notification_options => 'w,u,c',
+        contact_groups => 'sysadmins',
+  }
+
+
 
 ###WINDOWS SERVICES END###
   nagios_hostgroup{'windows-servers':
