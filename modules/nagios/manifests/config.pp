@@ -314,7 +314,7 @@ class nagios::config {
   nagios_service { 'Win CPU Load':
         service_description => 'Cpu Load',
         hostgroup_name => 'windows-servers',
-        check_command => 'check_ntdsk!CPULOAD!',
+        check_command => 'check_ntdsk!CPULOAD! 5,80,90',
         target => '/etc/nagios3/conf.d/ppt_wincpuload.cfg',
         max_check_attempts => 3,
         retry_check_interval => 1,
